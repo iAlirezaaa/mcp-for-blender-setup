@@ -44,6 +44,27 @@
 خروجی صفر یعنی «به‌روز است یا به‌روز شد» و خروجی یک یعنی خطا. اسکریپت هیچ‌وقت
 کامیت محلی نمی‌سازد و merge غیر fast-forward انجام نمی‌دهد.
 
+## آینه‌ی گیت‌هاب (`mirror.ps1`)
+
+این پوشه به‌صورت کامل در ریپوی عمومی زیر آینه می‌شود:
+
+<https://github.com/iAlirezaaa/mcp-for-blender-setup>
+
+```powershell
+.\mirror.ps1            # اول از upstream آپدیت می‌کند، بعد snapshot کامل را push می‌کند
+.\mirror.ps1 -NoPull    # بدون آپدیت، فقط وضعیت فعلی پوشه را push می‌کند
+.\mirror.ps1 -Message "توضیح دلخواه"
+```
+
+هر اجرا یک کامیت snapshot از تمام فایل‌های پوشه (به‌جز محتوای داخلی `.git`) می‌سازد:
+کد اصلی، `update.ps1`/`update.cmd`/`mirror.ps1`، `AUTO-UPDATE.md`، `Repo.txt` و همه‌ی
+بکاپ‌های `*_cloneUpdated_*`. فایل‌هایی که در `.gitignore` هستند (مثل `.venv`) آپلود
+نمی‌شوند. اگر از آخرین snapshot چیزی عوض نشده باشد، کامیت خالی ساخته نمی‌شود.
+
+> در GitHub تاریخچه‌ی خود snapshot‌ها ذخیره می‌شود، نه پوشه‌ی `.git`؛ برای برگرداندن
+> یک نسخه کافی است ریپو را clone کنید (یا یک snapshot قدیمی را checkout کنید) و دوباره
+> `git remote add origin https://github.com/ahujasid/mcp-for-blender.git` بزنید.
+
 ## به‌روزرسانی کاملاً خودکار (بدون ایجنت)
 
 برای اجرای روزانه، یک Task در Windows Task Scheduler بسازید (بدون نیاز به ادمین):
