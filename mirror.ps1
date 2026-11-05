@@ -155,6 +155,14 @@ try {
     $fileCount = @((Invoke-Git @('ls-tree', '-r', '--name-only', $tree)).Output).Count
     $backupCount = ($forceAdd | Where-Object { $_ -like '*_cloneUpdated_*' } | Measure-Object).Count
 
+    if ($parent) {
+        $parentTree = Get-HashFrom (Invoke-Git @('rev-parse', "$parent^{tree}"))
+        if ($parentTree -eq $tree) {
+            Write-Info "No changes since the last snapshot ($($parent.Substring(0, 7))); nothing to publish."
+            exit 0
+        }
+    }
+
     if (-not $Message) {
         $Message = "Snapshot $stamp (upstream $upstreamHead)"
         if ($backupCount -gt 0) { $Message += " + $backupCount local backup(s)" }
